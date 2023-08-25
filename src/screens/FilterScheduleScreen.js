@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Slider } from 'react-native';
 import { CheckBox, Autocomplete } from 'react-native-elements'; // You'll need to import the corresponding components or use alternative libraries
-import TourCard from '../components/TourCard';
-import NoData from '../components/NoData';
+// import TourCard from '../components/TourCard';
+// import NoData from '../components/NoData';
 
 const FilterSchedule = () => {
   const [showFilter, setShowFilter] = useState(true);

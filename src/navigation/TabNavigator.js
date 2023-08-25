@@ -7,6 +7,7 @@ import MyTripsScreen from '../screens/MyTripsScreen';
 import SavedScreen from '../screens/SavedScreen';
 import AccountScreen from '../screens/ProfileScreen';
 import Dist from '../screens/Distinations';
+import Test from '../screens/Test';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +67,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="MyTrips"
-        component={MyTripsScreen}
+        component={Test}
         options={{headerShown: false}}
       />
       <Tab.Screen

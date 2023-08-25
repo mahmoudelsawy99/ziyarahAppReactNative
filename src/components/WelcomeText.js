@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity , Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import sizes from '../assets/Sizes';
 import colors from '../assets/Colors';
@@ -22,10 +22,14 @@ const WelcomeText = (props) => {
       </View>
 
       <TouchableOpacity onPress={props.onPress}>
-        <MaterialCommunityIcons
+        {/* <MaterialCommunityIcons
           name="bell-badge-outline"
           size={sizes.bellSize}
-        />
+        /> */}
+           <Image
+                source={require("../assets/imgs/makka1.jpg")}
+                style={styles.image}
+              />
       </TouchableOpacity>
     </View>
   );
@@ -46,10 +50,16 @@ const styles = StyleSheet.create({
   textWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    marginHorizontal: 35,
+    marginHorizontal: 45,
+    marginVertical: -45,
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 42,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
   },
 });
 

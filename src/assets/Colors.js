@@ -1,11 +1,12 @@
 const colors = {
     main: "#161616",
     secondary: "#858585",
-    third: "#F0C08F",
+    third: "#F0FCF0",
+    primary: '#04555c',
     gray: "#C7C7C7",
-    green: "#4caf50",
+    green: "#66AF66",
     white: "#FAFAFA",
-    shadow: "rgba(67, 204, 105, 0.4)",
+    shadow: "#007A00",
     greenLight: "#43CC69",
     background: "#F2F2F2",
     linearGriadient:{

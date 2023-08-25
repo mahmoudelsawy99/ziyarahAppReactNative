@@ -1,6 +1,6 @@
 import React, { useEffect ,useState} from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity,SafeAreaView,
-  Image,
+import { View, Text, TextInput, StyleSheet,StatusBar, ScrollView, TouchableOpacity,SafeAreaView,
+  Image,FlatList,ImageBackground,
   Dimensions, } from 'react-native';
 import WelcomeText from '../components/WelcomeText';
 import InputBox from '../components/InputBox';
@@ -13,13 +13,124 @@ import colors from '../assets/Colors';
 import ImageButton from "../components/ImageButton";
 import { connect } from 'react-redux';
 import axios from 'axios';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 const { width, height } = Dimensions.get("screen");
 
 
-const HomeScreen = (props) => {
+const COLORS = {
+    white: '#FFF',
+    dark: '#000',
+    primary: '#007A00',
+    secondary: '#e1e8e9',
+    light: '#f9f9f9',
+    grey: '#dddedd',
+    red: 'red',
+    orange: '#f5a623',
+  };
+  const places = [
+    {
+      id: '1',
+      name: 'Lago di Braies, Braies',
+      location: 'Italy',
+      image: require('../assets/imgs/location1.jpg'),
+      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
+    },
+    {
+      id: '2',
+      name: 'Siargao island',
+      location: 'Philippines',
+      image: require('../assets/imgs/location2.jpg'),
+      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
+    },
+    {
+      id: '3',
+      name: 'Manarola',
+      location: 'Italy',
+      image: require('../assets/imgs/location3.jpg'),
+      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
+    },
+    {
+      id: '4',
+      name: 'Perhentian Islands',
+      location: 'Malaysia',
+      image: require('../assets/imgs/location4.jpg'),
+      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
+    },
+  ];
+ 
+const HomeScreen = ({navigation}) => {
 
+    const categoryIcons = [
+        <TouchableOpacity onPress={() => navigation.navigate('filter')}>
 
+            <Icon name="edit-location" size={40} color={COLORS.primary} />
+            <Text style={[styles.textDest , {left:4}]}>Filter</Text>
+        </TouchableOpacity>,
+
+        <TouchableOpacity onPress={() => navigation.navigate('SearchResults', { id: 2 })}>
+            <Image
+                  source={require("../assets/imgs/mosque.png")}
+                  style={styles.headerImage}
+                />
+                <Text style={[styles.textDest , {left:-9}]}>Madinah</Text>
+        </TouchableOpacity>,
+           <TouchableOpacity onPress={() => navigation.navigate('SearchResults', { id: 1 })}>
+            <Image
+            source={require("../assets/imgs/kaaba.png")}
+            style={styles.headerImage}
+          />
+          <Text style={[styles.textDest , {left:-7}]}>Makkah</Text>
+        </TouchableOpacity>,
+      ];
+      const ListCategories = () => {
+        return (
+          <View style={styles.categoryContainer}>
+            {categoryIcons.map((icon, index) => (
+              <View key={index} style={styles.iconContainer}>
+                {icon}
+              </View>
+            ))}
+          </View>
+        );
+      };
+      const PlacesCard = ({place}) => {
+          const image = {uri:place.thumbnail};
+        return (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('Details', place)}>
+            <ImageBackground style={styles.cardImage} source={image}>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  marginTop: 10,
+                }}>
+                {place.name}
+              </Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                }}>
+                {/* <View style={{flexDirection: 'row'}}>
+                  <Icon name="place" size={20} color={COLORS.white} />
+                  <Text style={{marginLeft: 5, color: COLORS.white}}>
+                    {place.location}
+                  </Text>
+                </View> */}
+                {/* <View style={{flexDirection: 'row'}}>
+                  <Icon name="star" size={20} color={COLORS.white} />
+                  <Text style={{marginLeft: 5, color: COLORS.white}}>5.0</Text>
+                </View> */}
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+        );
+      };
   const [destinations, setDestinations] = useState([]);
 
 
@@ -28,7 +139,10 @@ const HomeScreen = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://ziyarh.com/api/destinations');
-        setDestinations(response.data); // Update state with fetched data
+        setDestinations(response.data.data); // Update state with fetched data
+        console.log('====================================');
+        console.log('destination:', destinations);
+        console.log('====================================');
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -40,7 +154,7 @@ const HomeScreen = (props) => {
   useEffect(() => {
     // console.log('Destinations:', destinations);
   }, [destinations]);
-
+const destination = destinations.slice(0 , 11);
 
   const [loaded] = useFonts({
     Montserrat: require('../assets/fonts/Montserrat.ttf'),
@@ -52,85 +166,65 @@ const HomeScreen = (props) => {
     return null;
   }
   const nameDatabase = {
-    name: "Tomáš",
+    name: "Sama",
 }
 
   return (
     <ScrollView style={styles.container}>
 
-      <WelcomeText name={`${nameDatabase.name}`} onPress={() => props.navigation.navigate('MenuScreen')} />
-      <InputBox />
+   <StatusBar translucent={false} backgroundColor={COLORS.primary} />
+      <View style={styles.header}>
+        <Icon name="" size={28} color={COLORS.white} />
+        {/* <Text style={styles.textTravel}>Let’s Travel Now</Text> */}
+        <Icon name="" size={20} color={COLORS.white} />
+      </View>
+              <WelcomeText name={`${nameDatabase.name}`} onPress={() => props.navigation.navigate('MenuScreen')} />
+        
+      <InputBox style={{marginBottom:-50}} />
       <Offer onPress={() => props.navigation.navigate('TreasureScreen')} />
-
-
+<View>
+<Text style={styles.headerTitle}>Choose Your Destination </Text>
+        <ListCategories />
+</View>
 
       <SafeAreaView style={styles.container}>
+        <View style={{display:'flex', width:'100%', flexDirection:'row-reverse',justifyContent:'space-between', padding:20}}>
+      <Text style={styles.sectionTitle}>Places</Text>
+      <Text style={{
+    textDecorationLine:'underline',  
+    fontWeight: 'bold',
+    // fontSize: 20,
+    color:colors.green}} onPress={() => navigation.navigate('Dist')}>See More</Text>
+        </View>
+        <View>
+          <FlatList
+            contentContainerStyle={{ paddingLeft: 20 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={destination}
+            renderItem={({ item }) => <PlacesCard place={item} />}
+          />
+        </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {/* <View style={styles.header}>
-          <View style={{ flex: 0.6, paddingTop: 20 }}>
-            <Text style={styles.headerText}>Find Your Next trip!</Text>
-          </View>
-          <View style={{ flex: 0.35, paddingTop: 20, alignItems: "flex-end" }}>
-            <Image
-              source={require("../assets/imgs/img.jpg")}
-              style={styles.headerImage}
-            />
-          </View>
-        </View> */}
         <View style={styles.contentContainer}>
-          <View style={styles.imageContainer}>
-            <View style={styles.imageView}>
-              <Image
-                source={require("../assets/imgs/makka1.jpg")}
-                style={styles.image}
-              />
-              <ImageButton
-                onPress={() =>
-                  toCategory(
-                    require("../assets/imgs/makka1.jpg"),
-                    "Makkah",
-                    "Stunning Places"
-                  )
-                }
-                title="Makkah"
-                description="Stunning Places"
-              />
-            </View>
-            <View style={styles.imageView}>
-              <Image
-                source={require("../assets/imgs/madenha.jpeg")}
-                style={styles.image}
-              />
-              <ImageButton
-                onPress={() =>
-                  toCategory(
-                    require("../assets/imgs/madenha.jpeg"),
-                    "Family",
-                    "Love Everywhere"
-                  )
-                }
-                title="Madinah"
-                description="Love Everywhere"
-              />
-            </View>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
 
       <View style={styles.wrapper}>
-        <Text style={styles.textCategory}>Popular Tours</Text>
+        <Text style={styles.textCategory}></Text>
         <TouchableOpacity>
-          <Text style={styles.textView}>See All</Text>
+          <Text style={styles.textView}></Text>
         </TouchableOpacity>
       </View>
-
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <Card header={`${cardInfoDatabase.header[0]}`} result={`${cardInfoDatabase.result[0]}`} reviews={`${cardInfoDatabase.reviews[0]}`} image={require('../assets/imgs/tent.jpg')} onPress={() => props.navigation.navigate('TourScreenOne')} />
-        <Card header={`${cardInfoDatabase.header[1]}`} result={`${cardInfoDatabase.result[1]}`} reviews={`${cardInfoDatabase.reviews[1]}`} image={require('../assets/imgs/caravan.jpg')} onPress={() => props.navigation.navigate('TourScreenTwo')} />
-        <Card header={`${cardInfoDatabase.header[2]}`} result={`${cardInfoDatabase.result[2]}`} reviews={`${cardInfoDatabase.reviews[2]}`} image={require('../assets/imgs/cannoing.jpg')} onPress={() => props.navigation.navigate('TourScreenThree')} />
-      </ScrollView>
+   <View style={styles.wrapper}>
+        <Text style={styles.textCategory}></Text>
+        <TouchableOpacity>
+          <Text style={styles.textView}></Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
+    
   );
 };
 
@@ -161,20 +255,20 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+//   header: {
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
   headerText: {
     fontSize: 45,
     fontWeight: "bold",
     paddingLeft: 20,
   },
   headerImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
+    width: 40,
+    height: 40,
+    // borderRadius: 50,
   },
   contentContainer: {
     alignItems: "center",
@@ -192,6 +286,74 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 20,
+  },
+  categoryContainer: {
+    marginTop: 60,
+    marginHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconContainer: {
+    height: 60,
+    width: 60,
+    backgroundColor: COLORS.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+  },
+  inputContainer: {
+    height: 60,
+    width: '100%',
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    position: 'absolute',
+    top: 90,
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    elevation: 12,
+  },
+  header: {
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // backgroundColor: COLORS.primary,
+  },
+  headerTitle: {
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+    // fontSize: sizes.buttonTextSize,
+    color:colors.green,
+    marginBottom:-60,
+    padding:20
+    
+  },
+  textTravel: {
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    fontSize: sizes.buttonTextSize,
+    color:COLORS.white
+  },
+  textDest:{
+    position:'absolute',
+    top:60,
+    fontWeight:'700'
+  },
+  sectionTitle: {
+    // marginHorizontal: 20,
+    // marginVertical: 20,
+    fontWeight: 'bold',
+    fontSize: 20,
+    color:colors.green
+  },
+  cardImage: {
+    height: 220,
+    width: width / 2,
+    marginRight: 20,
+    padding: 10,
+    overflow: 'hidden',
+    borderRadius: 10,
   },
 });
 

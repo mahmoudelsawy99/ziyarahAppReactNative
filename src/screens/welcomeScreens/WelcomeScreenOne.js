@@ -20,7 +20,7 @@ const WelcomeScreenOne = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.pictureContainer}>
-                <Image style={styles.picture} source={require('../../assets/imgs/draw.jpg')} />
+                <Image style={styles.picture} source={require('../../assets/imgs/splash11.jpg')} />
             </View>
 
             <Text style={styles.textMain}>Explore a New World</Text>

@@ -18,6 +18,8 @@ import Details from "../screens/Details";
 import TabBar from "./TabNavigator";
 // import DrawerNavigation from './DrawerNavigation';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import FilterSchedule from "../screens/FilterScheduleScreen";
+import SearchResults from "../screens/SearchResults";
 
 const Stack = createStackNavigator();
 const Auth = () => {
@@ -52,26 +54,6 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="SplashScreen">
       <Stack.Screen
-        name="WelcomeScreenOne"
-        component={WelcomeScreenOne}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="WelcomeScreenTwo"
-        component={WelcomeScreenTwo}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="WelcomeScreenThree"
-        component={WelcomeScreenThree}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Auth"
-        component={Auth}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="TabNavigator"
         component={TabBar}
         options={{ headerShown: false }}
@@ -95,6 +77,26 @@ const StackNavigator = () => {
           ],
         }}
       />
+      <Stack.Screen
+        name="WelcomeScreenOne"
+        component={WelcomeScreenOne}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="WelcomeScreenTwo"
+        component={WelcomeScreenTwo}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="WelcomeScreenThree"
+        component={WelcomeScreenThree}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Auth"
+        component={Auth}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="TourBooking" component={TourBooking} />
       <Stack.Screen name="TourSchedules" component={TourSchedules} />
@@ -104,6 +106,8 @@ const StackNavigator = () => {
       <Stack.Screen name="Trips" component={TripsScreen} />
       <Stack.Screen name="TripDetails" component={TripDetailsScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="filter" component={FilterSchedule} />
+      <Stack.Screen name="SearchResults" component={SearchResults} />
     </Stack.Navigator>
   );
 };

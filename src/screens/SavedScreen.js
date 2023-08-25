@@ -178,7 +178,7 @@ const HomeScreen = ({navigation}) => {
               <Icon name="search" size={28} />
               <TextInput
                 placeholder="Search place"
-                style={{ color: COLORS.grey }}
+                style={{ color: COLORS.red }}
               />
             </View>
           </View>

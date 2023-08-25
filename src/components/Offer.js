@@ -23,9 +23,9 @@ const Offer = (props) => {
         <View style={styles.sectionOne}>
           <Text style={styles.textHeader}>Explore The World and Find Best Deal!</Text>
           <Text style={styles.textParagraph}>Get Special Offer</Text>
-          <TouchableOpacity style={styles.buttonContainer} onPress={props.onPress}>
+          {/* <TouchableOpacity style={styles.buttonContainer} onPress={props.onPress}>
             <Text style={styles.buttonText}>Explore More</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View style={styles.sectionTwo}>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   sectionOne: {
     width: 180,
-    paddingTop: 30,
+    paddingTop: 60,
     paddingLeft: 18,
   },
   wrapper: {
@@ -69,12 +69,13 @@ const styles = StyleSheet.create({
     fontSize: sizes.paragraphSizeSmaller,
     color: colors.secondary,
     marginBottom: 26,
+    marginHorizontal:-1
   },
   textHeader: {
     fontFamily: 'Montserrat',
     fontWeight: '700',
     fontSize: sizes.menuText,
-    textAlign: 'left',
+    // textAlign: 'left',
     marginBottom: 6,
   },
   image: {

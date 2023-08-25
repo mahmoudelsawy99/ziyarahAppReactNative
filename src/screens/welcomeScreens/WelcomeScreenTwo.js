@@ -21,7 +21,7 @@ const WelcomeScreenOne = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.pictureContainer}>
-        <Image style={styles.picture} source={require('../../assets/imgs/draw2.png')} />
+        <Image style={styles.picture} source={require('../../assets/imgs/splash22.jpg')} />
       </View>
 
       <Text style={styles.textMain}>Enjoy Your Trip</Text>
