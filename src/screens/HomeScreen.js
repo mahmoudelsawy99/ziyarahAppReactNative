@@ -27,38 +27,46 @@ const COLORS = {
     red: 'red',
     orange: '#f5a623',
   };
-  const places = [
-    {
-      id: '1',
-      name: 'Lago di Braies, Braies',
-      location: 'Italy',
-      image: require('../assets/imgs/location1.jpg'),
-      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
-    },
-    {
-      id: '2',
-      name: 'Siargao island',
-      location: 'Philippines',
-      image: require('../assets/imgs/location2.jpg'),
-      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
-    },
-    {
-      id: '3',
-      name: 'Manarola',
-      location: 'Italy',
-      image: require('../assets/imgs/location3.jpg'),
-      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
-    },
-    {
-      id: '4',
-      name: 'Perhentian Islands',
-      location: 'Malaysia',
-      image: require('../assets/imgs/location4.jpg'),
-      details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consequat nisl vel pretium lectus quam id leo. Velit euismod in pellentesque massa placerat duis ultricies lacus sed. Justo laoreet sit amet cursus sit.`,
-    },
-  ];
+  
+ 
  
 const HomeScreen = ({navigation}) => {
+
+  const handleMakkahPress = () => {
+    axios
+    .get("https://ziyarh.com/api/destinations/search?cities[]=1")
+    .then(response => {
+      const data = response.data.data.map(item => ({
+        ...item,
+        location: 'Makkah' // Add the city number to each item
+      }));
+      console.log(data);
+      navigation.navigate("SearchResults", { data });
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+      // Handle error (show a message, retry, etc.)
+    });
+  };
+
+  const handleMadinahPress = () => {
+    axios
+      .get("https://ziyarh.com/api/destinations/search?cities[]=2")
+      .then(response => {
+        const data = response.data.data.map(item => ({
+          ...item,
+          location: 'Madinah' // Add the city number to each item
+        }));
+        console.log(data);
+        navigation.navigate("SearchResults", { data });
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+        // Handle error (show a message, retry, etc.)
+      });
+  };
+  
+  
 
     const categoryIcons = [
         <TouchableOpacity onPress={() => navigation.navigate('filter')}>
@@ -67,14 +75,14 @@ const HomeScreen = ({navigation}) => {
             <Text style={[styles.textDest , {left:4}]}>Filter</Text>
         </TouchableOpacity>,
 
-        <TouchableOpacity onPress={() => navigation.navigate('SearchResults', { id: 2 })}>
+        <TouchableOpacity onPress={handleMadinahPress}>
             <Image
                   source={require("../assets/imgs/mosque.png")}
                   style={styles.headerImage}
                 />
                 <Text style={[styles.textDest , {left:-9}]}>Madinah</Text>
         </TouchableOpacity>,
-           <TouchableOpacity onPress={() => navigation.navigate('SearchResults', { id: 1 })}>
+           <TouchableOpacity onPress={handleMakkahPress}>
             <Image
             source={require("../assets/imgs/kaaba.png")}
             style={styles.headerImage}
@@ -161,12 +169,11 @@ const destination = destinations.slice(0 , 11);
   });
 
 
-
   if (!loaded) {
     return null;
   }
   const nameDatabase = {
-    name: "Sama",
+    name: "Osama",
 }
 
   return (
@@ -176,11 +183,11 @@ const destination = destinations.slice(0 , 11);
       <View style={styles.header}>
         <Icon name="" size={28} color={COLORS.white} />
         {/* <Text style={styles.textTravel}>Let’s Travel Now</Text> */}
-        <Icon name="" size={20} color={COLORS.white} />
+        <Icon name="" size={20} color={COLORS.white}/>
       </View>
               <WelcomeText name={`${nameDatabase.name}`} onPress={() => props.navigation.navigate('MenuScreen')} />
-        
-      <InputBox style={{marginBottom:-50}} />
+ 
+      <InputBox  navigation={navigation} style={{marginBottom:-50}} />
       <Offer onPress={() => props.navigation.navigate('TreasureScreen')} />
 <View>
 <Text style={styles.headerTitle}>Choose Your Destination </Text>
@@ -210,6 +217,7 @@ const destination = destinations.slice(0 , 11);
         </View>
       </ScrollView>
     </SafeAreaView>
+
 
       <View style={styles.wrapper}>
         <Text style={styles.textCategory}></Text>

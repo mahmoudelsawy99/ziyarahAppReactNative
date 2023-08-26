@@ -1,128 +1,135 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { useTheme } from "@react-navigation/native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Icons from "@expo/vector-icons/MaterialIcons";
-import PriceRangeSelector from "./PriceRange";
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  Image,
+  Dimensions,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { FontAwesome } from "@expo/vector-icons";
 
-const MAX_PRICE = 500;
+const windowWidth = Dimensions.get("window").width;
 
-const COLORS = [
-  {
-    color: "#D93F3E",
-    label: "Red",
-    itemCount: 4,
-  },
-  {
-    color: "#FFFFFF",
-    label: "White",
-    itemCount: 2,
-  },
-  // ... other color 
-];
+const Discover = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [mainData, setMainData] = useState([]);
 
-const SLEEVES = [
-  {
-    id: "sortsleeve",
-    label: "Sort Sleeve",
-    itemCount: 20,
-  },
-  {
-    id: "longsleeve",
-    label: "Long Sleeve",
-    itemCount: 100,
-  },
-  // ... other sleeve objects
-];
+  const staticData = {
+    item1: {
+      imageSrc:
+        "https://cdn.pixabay.com/photo/2015/10/30/12/22/eat-1014025_1280.jpg",
+      title: "Example Title 1",
+      location: "Example Location 1",
+    },
+    item2: {
+      imageSrc:
+        "https://cdn.pixabay.com/photo/2015/10/30/12/22/eat-1014025_1280.jpg",
+      title: "Example Title 2",
+      location: "Example Location 2",
+    },
+    // Add more items as needed
+  };
 
-const FilterView = () => {
-  const [startPrice, setStartPrice] = useState(50);
-  const [endPrice, setEndPrice] = useState(250);
-  const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  
+  useEffect(() => {
+    setIsLoading(true);
+    // Simulating data fetching
+    setTimeout(() => {
+      setMainData(Object.values(staticData));
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
-    <View style={{ flex: 1 }}>
-      <BottomSheetScrollView style={{ flex: 1 }}>
-        <View style={{ paddingVertical: 24, gap: 24 }}>
-          {/* ... other UI components */}
-        </View>
-      </BottomSheetScrollView>
-      {/* Button */}
-      <View
-        style={{
-          padding: 24,
-          paddingBottom: 24 + insets.bottom,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            backgroundColor: theme.colors.primary,
-            height: 64,
-            borderRadius: 64,
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: theme.colors.background,
-            }}
-          >
-            Apply filters
-          </Text>
-          <View
-            style={{
-              backgroundColor: theme.colors.card,
-              width: 40,
-              aspectRatio: 1,
-              borderRadius: 40,
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              top: 12,
-              right: 12,
-              bottom: 12,
-            }}
-          >
-            <Icons name="arrow-forward" size={24} color={theme.colors.text} />
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.contentContainer}>
+          <View style={styles.itemContainer}>
+            {isLoading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0B646B" />
+              </View>
+            ) : mainData.length > 0 ? (
+              mainData.map((data, i) => (
+                <View key={i} style={styles.item}>
+                  <Image
+                    source={{ uri: data.imageSrc }}
+                    style={styles.itemImage}
+                  />
+                  <Text style={styles.itemTitle}>{data.title}</Text>
+                  <Text style={styles.itemLocation}>{data.location}</Text>
+                </View>
+              ))
+            ) : (
+              <View style={styles.noDataContainer}>
+                <Text style={styles.noDataText}>Opps...No Data Found</Text>
+              </View>
+            )}
           </View>
-        </TouchableOpacity>
-      </View>
-    </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-export default FilterView;
-
-const Chip = ({ isSelected, label, itemCount, left }) => {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-        borderRadius: 100,
-        backgroundColor: isSelected
-          ? theme.colors.text
-          : theme.colors.background,
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      {!!left && <View style={{ marginRight: 8 }}>{left}</View>}
-      <Text
-        style={{
-          fontSize: 14,
-          color: isSelected ? theme.colors.background : theme.colors.text,
-        }}
-      >
-        {label} [{itemCount}]
-      </Text>
-    </View>
-  );
+const styles = {
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  contentContainer: {
+    paddingHorizontal: windowWidth * 0.05,
+  },
+  itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    marginTop: 8,
+  },
+  item: {
+    width: windowWidth * 0.44,
+    marginBottom: 16,
+    borderColor: "#E5E5E5",
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 8,
+  },
+  itemImage: {
+    width: "100%",
+    height: 120,
+    borderRadius: 8,
+  },
+  itemTitle: {
+    color: "#333",
+    fontSize: windowWidth * 0.045,
+    fontWeight: "bold",
+    marginTop: 4,
+  },
+  itemLocation: {
+    color: "#999",
+    fontSize: windowWidth * 0.035,
+    marginTop: 2,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  noDataContainer: {
+    width: "100%",
+    height: 400,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  noDataText: {
+    fontSize: windowWidth * 0.055,
+    color: "#428288",
+    fontWeight: "bold",
+  },
 };
+
+export default Discover;

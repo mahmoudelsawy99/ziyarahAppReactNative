@@ -67,7 +67,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="MyTrips"
-        component={Test}
+        component={MyTripsScreen}
         options={{headerShown: false}}
       />
       <Tab.Screen
