@@ -49,8 +49,9 @@ const DistDetails = ({ route, navigation }) => {
   if (!loaded || !destinationData) {
     return null;
   }
-
+console.log("dist" , destinationData.three_tours)
   return (
+    
     <ScrollView style={styles.container}>
       <Image source={{ uri: destinationData.thumbnail }} style={styles.image} resizeMode="cover" />
 

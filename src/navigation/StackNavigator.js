@@ -97,7 +97,7 @@ const StackNavigator = () => {
         component={Auth}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Details" component={Details} />
+      <Stack.Screen name="Details" options={{ headerShown: false }} component={Details} />
       <Stack.Screen name="TourBooking" component={TourBooking} />
       <Stack.Screen name="TourSchedules" component={TourSchedules} />
       <Stack.Screen name="TourDetails" component={TourDetails} />

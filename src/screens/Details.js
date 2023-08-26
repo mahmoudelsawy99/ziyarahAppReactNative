@@ -1,121 +1,120 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import {
   ImageBackground,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   View,
-  Text,
+  Image 
+  
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import HTML from 'react-native-render-html';
+import { ScrollView } from 'react-native';
+import { Button , Card , Text} from '@ui-kitten/components';
+import { Touchable } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Dialoag from '../components/Dialoag'
 // import COLORS from '../../consts/colors';
-
+import { Dialog, Portal, PaperProvider , Avatar, IconButton} from 'react-native-paper';
+import FloatingButton from '../components/ModalTour';
+import axios from 'axios';
 
 const COLORS = {
-    white: '#FFF',
-    dark: '#000',
-    primary: '#04555c',
-    secondary: '#e1e8e9',
-    light: '#f9f9f9',
-    grey: '#dddedd',
-    red: 'red',
-    orange: '#f5a623',
-  };
+  white: '#FFF',
+  dark: '#000',
+  primary: '#007A00',
+  secondary: '#e1e8e9',
+  light: '#f9f9f9',
+  grey: '#dddedd',
+  red: 'red',
+  orange: '#f5a623',
+};
   
 const DetailsScreen = ({navigation, route}) => {
   const place = route.params;
+  const [destinationData, setDestinationData] = useState(null);
+
+  useEffect(() => {
+    // Fetch data for the specific destination using Axios
+    axios
+      .get(`https://ziyarh.com/api/destination/${place.id}`)
+      .then((response) => {
+        const data = response.data.data;
+        setDestinationData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, [place.id]);
+
+  if (!destinationData) {
+    return null;
+  }
+console.log("dist***" , destinationData.three_tours)
+  console.log("place**** " + place.three_tours);
+  const image = {uri:place.thumbnail};
   return (
+      
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
-      <ImageBackground style={{flex: 0.7}} source={place.image}>
-        <View style={style.header}>
+     
+     <StatusBar hidden={true} />
+      <ScrollView contentContainerStyle={style.scrollViewContent}>
+      <Image source={image} style={style.backgroundImage} />
           <Icon
             name="arrow-back-ios"
             size={28}
             color={COLORS.white}
             onPress={navigation.goBack}
+            style={{  position:'absolute' , top:20 , left:23 , backgroundColor: 'rgba(255,255,255,0.5)' , borderRadius:50 , justifyContent:'center' , alignItems:'center' , paddingLeft:10  , paddingHorizontal:2 , paddingVertical:5 }}
           />
-          <Icon name="more-vert" size={28} color={COLORS.white} />
+        <View style={style.header}>
+          {/* <Icon name="more-vert" size={28} color={COLORS.white} /> */}
         </View>
-        <View style={style.imageDetails}>
-          <Text
-            style={{
-              width: '70%',
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: COLORS.white,
-              marginBottom: 20,
-            }}>
-            {place.name}
-          </Text>
-          <View style={{flexDirection: 'row'}}>
-            <Icon name="star" size={30} color={COLORS.orange} />
-            <Text
-              style={{color: COLORS.white, fontWeight: 'bold', fontSize: 20}}>
-              5.0
-            </Text>
-          </View>
-        </View>
-      </ImageBackground>
       <View style={style.detailsContainer}>
         <View style={style.iconContainer}>
           <Icon name="favorite" color={COLORS.red} size={30} />
         </View>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <Icon name="place" size={28} color={COLORS.primary} />
+        <View style={style.imageDetails}>
+        </View>
           <Text
             style={{
-              marginLeft: 5,
-              fontSize: 20,
+              width: '100%',
+              fontSize: 30,
               fontWeight: 'bold',
-              color: COLORS.primary,
+              // color: COLORS.white,
+              marginBottom: 10,
             }}>
-            {place.location}
+            {place.name}
           </Text>
-        </View>
         <Text style={{marginTop: 20, fontWeight: 'bold', fontSize: 20}}>
-          About the trip
+        Description
         </Text>
-        <Text style={{marginTop: 20, lineHeight: 22}}>{place.details}</Text>
+        <View style={style.descriptionContainer}>
+        <HTML source={{ html: place.description }} />
+      </View>
+     
+        
       </View>
       <View style={style.footer}>
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: COLORS.white,
-            }}>
-            $100
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: 'bold',
-              color: COLORS.grey,
-              marginLeft: 2,
-            }}>
-            /PER DAY
-          </Text>
-        </View>
-        <View style={style.bookNowBtn}>
-          <Text
-            style={{color: COLORS.primary, fontSize: 16, fontWeight: 'bold'}}>
-            Book Now
-          </Text>
-        </View>
+       <FloatingButton tour={destinationData} />
       </View>
+    </ScrollView>
     </SafeAreaView>
+ 
   );
 };
 const style = StyleSheet.create({
   bookNowBtn: {
     height: 50,
-    width: 150,
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
+    width: 300,
+    backgroundColor: COLORS.primary,
+    color:COLORS.primary,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: COLORS.primary
   },
 
   iconContainer: {
@@ -131,19 +130,21 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   detailsContainer: {
-    top: -30,
+    top: -100,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingVertical: 40,
     paddingHorizontal: 20,
     backgroundColor: COLORS.white,
     flex: 0.3,
+    // elevation:4
   },
   header: {
     marginTop: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+    // position:'absolute'
   },
   imageDetails: {
     padding: 20,
@@ -155,13 +156,36 @@ const style = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
-    backgroundColor: COLORS.primary,
+    // backgroundColor: COLORS.primary,
     height: 70,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    // borderTopLeftRadius: 15,
+    // borderTopRightRadius: 15,
+    marginTop:-110
+  },
+  descriptionContainer: {
+    marginBottom: 3,
+  },
+  textDescription: {
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+    // fontSize: sizes.descriptionSize,
+    marginBottom: 8,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  backgroundImage: {
+    // position: 'relative',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    // resizeMode: 'cover',
+    width:400,
+    height:310
   },
 });
 
