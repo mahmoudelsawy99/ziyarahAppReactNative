@@ -20,6 +20,9 @@ import Dialoag from '../components/Dialoag'
 import { Dialog, Portal, PaperProvider , Avatar, IconButton} from 'react-native-paper';
 import FloatingButton from '../components/ModalTour';
 import axios from 'axios';
+import colors from '../assets/Colors';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const COLORS = {
   white: '#FFF',
@@ -35,23 +38,24 @@ const COLORS = {
 const DetailsScreen = ({navigation, route}) => {
   const place = route.params;
   const [destinationData, setDestinationData] = useState(null);
-
   useEffect(() => {
     // Fetch data for the specific destination using Axios
     axios
-      .get(`https://ziyarh.com/api/destination/${place.id}`)
-      .then((response) => {
-        const data = response.data.data;
-        setDestinationData(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+    .get(`https://ziyarh.com/api/destination/${place.id}`)
+    .then((response) => {
+      const data = response.data.data;
+      setDestinationData(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
   }, [place.id]);
-
+  
   if (!destinationData) {
     return null;
   }
+  const evenning = destinationData.three_tours[0];
+  const morning = destinationData.three_tours[1];
 console.log("dist***" , destinationData.three_tours)
   console.log("place**** " + place.three_tours);
   const image = {uri:place.thumbnail};
@@ -94,12 +98,52 @@ console.log("dist***" , destinationData.three_tours)
         <View style={style.descriptionContainer}>
         <HTML source={{ html: place.description }} />
       </View>
-     
-        
+      <Text style={{marginTop: 20, fontWeight: 'bold', fontSize: 20}}>
+        Tour
+        </Text>
+        <View style={{marginLeft:5 , marginTop:3}}>
+
+      <TouchableOpacity  onPress={() => {
+            navigation.navigate('TourDetails', { id: morning.id });
+          }} style={{ backgroundColor: colors.light , borderColor:colors.shadow, width:300 , margin:5 , padding:35, borderRadius:30 , borderWidth:1 ,flexDirection:'row-reverse' , justifyContent:"space-between" }}>
+        <View>
+      <Icon2 name="white-balance-sunny" size={30} color={COLORS.primary} />
+        <Text style={{fontWeight:'bold'}}>Morning</Text>
+        </View>
+        <View style={{marginRight:10}}>
+          <Text>
+            <Text style={{fontWeight:'600'}}>Starts:</Text> {morning.start} {"  "}
+          <Text style={{fontWeight:'600'}}>Ends:</Text> {morning.end} 
+            </Text>
+            <Text style={{marginTop:12}}>
+              <Text style={{fontWeight:'600'}}>Duration: </Text>
+             {morning.duration} Hours
+            </Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity    onPress={() => {
+            navigation.navigate('TourDetails', { id: evenning.id });
+          }} style={{ backgroundColor: colors.green , width:300  , margin:5 , padding:35 ,borderRadius:30 , flexDirection:'row-reverse' , justifyContent:"space-between" }}>
+        <View>
+      <Icon2 name="weather-night" size={30} color={COLORS.white} />
+        <Text style={{fontWeight:'bold'}}>Evenning</Text>
+        </View>
+        <View style={{marginRight:10}}>
+          <Text>
+            <Text style={{fontWeight:'600'}}>Starts:</Text> {evenning.start} {"  "}
+          <Text style={{fontWeight:'600'}}>Ends:</Text> {evenning.end} 
+            </Text>
+            <Text style={{marginTop:12}}>
+              <Text style={{fontWeight:'600'}}>Duration: </Text>
+             {evenning.duration} Hours
+            </Text>
+        </View>
+      </TouchableOpacity>
+        </View>
       </View>
-      <View style={style.footer}>
+      {/* <View style={style.footer}>
        <FloatingButton tour={destinationData} />
-      </View>
+      </View> */}
     </ScrollView>
     </SafeAreaView>
  
@@ -130,7 +174,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   detailsContainer: {
-    top: -100,
+    top: -20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingVertical: 40,
@@ -140,19 +184,19 @@ const style = StyleSheet.create({
     // elevation:4
   },
   header: {
-    marginTop: 60,
+    // marginTop: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    // position:'absolute'
+    position:'absolute'
   },
   imageDetails: {
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    position: 'absolute',
-    bottom: 30,
+    // padding: 20,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // width: '100%',
+    // position: 'absolute',
+    // bottom: 30,
   },
   footer: {
     flexDirection: 'row',
@@ -163,7 +207,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     // borderTopLeftRadius: 15,
     // borderTopRightRadius: 15,
-    marginTop:-110
+    marginTop:-10
   },
   descriptionContainer: {
     marginBottom: 3,
@@ -175,7 +219,7 @@ const style = StyleSheet.create({
     marginBottom: 8,
   },
   scrollViewContent: {
-    flexGrow: 1,
+    // flexGrow: 1,
   },
   backgroundImage: {
     // position: 'relative',
@@ -185,7 +229,7 @@ const style = StyleSheet.create({
     // bottom: 0,
     // resizeMode: 'cover',
     width:400,
-    height:310
+    height:440
   },
 });
 
