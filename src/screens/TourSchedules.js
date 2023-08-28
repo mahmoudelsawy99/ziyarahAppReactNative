@@ -76,7 +76,7 @@ const TourSchedules = ({ route, navigation }) => {
   const renderPassengerTypeItem2 = ({ item }) => (
     <View style={styles.passengerTypeItem}>
       {renderImg(item.name)}
-      <Text>{item.name}</Text>
+      <Text style={{color:colors.shadow}}>{item.name}</Text>
       <Text>
         <FontAwesome name="money" size={16} color="green" /> {item.price} S.R
       </Text>
@@ -283,7 +283,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    padding:8
+    padding:8,
+    color:colors.shadow
   },
   bookButton: {
     backgroundColor: 'blue',
@@ -342,7 +343,8 @@ const styles = StyleSheet.create({
   passengerTypesTitle2: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 25,
+    color:colors.shadow
   },
   passengerTypesContainer: {
     marginVertical: 10,
