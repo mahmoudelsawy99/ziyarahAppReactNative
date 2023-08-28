@@ -100,7 +100,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Details" options={{ headerShown: false }} component={Details} />
       <Stack.Screen name="TourBooking" component={TourBooking} />
       <Stack.Screen name="TourSchedules" component={TourSchedules} />
-      <Stack.Screen name="TourDetails"   component={TourDetails} />
+      <Stack.Screen options={{ headerShown: false }} name="TourDetails"   component={TourDetails} />
       <Stack.Screen name="DistDetails" component={DistDetails} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       <Stack.Screen name="Trips" component={TripsScreen} />

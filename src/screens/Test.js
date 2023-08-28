@@ -506,7 +506,7 @@ import { Button, Dialog, Portal, PaperProvider, Text , Avatar, Card, IconButton}
 import colors from '../assets/Colors';
 import sizes from '../assets/Sizes';
 const { width, height } = Dimensions.get('window');
-
+import Svg, { Line, Circle } from 'react-native-svg';
 import axios from 'axios';
 const COLORS = {
     white: '#FFF',
@@ -558,48 +558,63 @@ const MyComponent = () => {
     </View>
   );
   return (
-    <PaperProvider>
-      <View>
-        <Button onPress={showDialog}  style={styles.bookNowBtn} >Show Dialog</Button >
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Tours</Dialog.Title>
-            <Dialog.Content>
-            {destinationData.three_tours.map((tour, index) => (
-          <React.Fragment key={tour.id}>
-            <Card
-              title={tour.title}
-              description={`Starts ${tour.start} Ends ${tour.end}\nDuration: ${tour.duration} Hours`}
-              image={{ uri: tour.image }} // Use tour.image instead of destinationData.thumbnail
-              location={tour.location}
-              onPress={() => {
-                navigation.navigate('TourDetails', { id: tour.id });
-              }}
-            />
-            {index < destinationData.three_tours.length - 1 && <View style={styles.separator} />}
-          </React.Fragment>
-        ))}
-                {/* <Header/> */}
-              <Text variant="bodyMedium">This is simple dialog</Text>
-              <Card.Title
-    title="Card Title"
-    subtitle="Card Subtitle"
-    left={(props) => <Avatar.Icon {...props} icon="white-balance-sunny" />}
-  />
-             <Card.Title
-    title="Card Title"
-    subtitle="Card Subtitle"
-    left={(props) => <Avatar.Icon {...props} icon="weather-night" />}
+  //   <PaperProvider>
+  //     <View>
+  //       <Button onPress={showDialog}  style={styles.bookNowBtn} >Show Dialog</Button >
+  //       <Portal>
+  //         <Dialog visible={visible} onDismiss={hideDialog}>
+  //           <Dialog.Title>Tours</Dialog.Title>
+  //           <Dialog.Content>
+  //           {destinationData.three_tours.map((tour, index) => (
+  //         <React.Fragment key={tour.id}>
+  //           <Card
+  //             title={tour.title}
+  //             description={`Starts ${tour.start} Ends ${tour.end}\nDuration: ${tour.duration} Hours`}
+  //             image={{ uri: tour.image }} // Use tour.image instead of destinationData.thumbnail
+  //             location={tour.location}
+  //             onPress={() => {
+  //               navigation.navigate('TourDetails', { id: tour.id });
+  //             }}
+  //           />
+  //           {index < destinationData.three_tours.length - 1 && <View style={styles.separator} />}
+  //         </React.Fragment>
+  //       ))}
+  //               {/* <Header/> */}
+  //             <Text variant="bodyMedium">This is simple dialog</Text>
+  //             <Card.Title
+  //   title="Card Title"
+  //   subtitle="Card Subtitle"
+  //   left={(props) => <Avatar.Icon {...props} icon="white-balance-sunny" />}
+  // />
+  //            <Card.Title
+  //   title="Card Title"
+  //   subtitle="Card Subtitle"
+  //   left={(props) => <Avatar.Icon {...props} icon="weather-night" />}
     
-  />
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-      </View>
-    </PaperProvider>
+  // />
+  //           </Dialog.Content>
+  //           <Dialog.Actions>
+  //             <Button onPress={hideDialog}>Done</Button>
+  //           </Dialog.Actions>
+  //         </Dialog>
+  //       </Portal>
+  //     </View>
+  //   </PaperProvider>
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  <Svg height="300" width="50">
+    <Line
+      x1="25"
+      y1="0"
+      x2="25"
+      y2="300"
+      stroke="grey"
+      strokeWidth="1"
+    />
+    <Circle cx="25" cy="50" r="10" fill="green" stroke="white" strokeWidth="3" />
+    <Circle cx="25" cy="150" r="10" fill="green" stroke="white" strokeWidth="3" />
+    <Circle cx="25" cy="250" r="10" fill="green" stroke="white" strokeWidth="3"/>
+  </Svg>
+</View>
   );
 };
 
