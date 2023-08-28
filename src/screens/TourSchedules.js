@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
   // },
   schedulesContainer: {
     marginBottom: 16,
+    justifyContent:'center'
   },
   schedulesTitle: {
     fontSize: 18,
@@ -298,7 +299,12 @@ const styles = StyleSheet.create({
   noSchedulesText: {
     textAlign: 'center',
     fontSize: 16,
+    fontWeight:'600',
     marginTop: 8,
+    marginRight:40,
+    padding:30,
+    backgroundColor:colors.third,
+    borderRadius:30
   },
   scheduleCard: {
     width: 200, 
