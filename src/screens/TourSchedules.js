@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     marginRight: 16,
-    color:colors.white,
+    color:colors.shadow,
     marginTop: 16,
   },
   scheduleItem: {
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight:'600',
     marginTop: 8,
-    marginRight:40,
+    marginRight:50,
     padding:30,
     backgroundColor:colors.third,
     borderRadius:30

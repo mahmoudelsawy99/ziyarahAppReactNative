@@ -6,13 +6,16 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  TouchableOpacity,
+  StatusBar
 } from "react-native";
 import PropTypes from "prop-types"; // Import PropTypes for prop type checking
 import { FontAwesome } from "@expo/vector-icons";
+import colors from '../assets/Colors';
 
 const windowWidth = Dimensions.get("window").width;
 
-const SearchResults = ({ route }) => {
+const SearchResults = ({ route , navigation }) => {
   const { data } = route.params;
 
   // Check if data is an array before mapping over it
@@ -20,12 +23,13 @@ const SearchResults = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+         <StatusBar translucent={false} backgroundColor={colors.shadow} />
       <ScrollView>
         <View style={styles.contentContainer}>
           <View style={styles.itemContainer}>
             {hasData ? (
               data.map((item, index) => (
-                <View key={index} style={styles.item}>
+                <TouchableOpacity key={index} style={styles.item} onPress={() => navigation.navigate('Details', item)}>
                   <Image
                     source={{ uri: item.images[0] }}
                     style={styles.itemImage}
@@ -38,12 +42,12 @@ const SearchResults = ({ route }) => {
                     </Text>
                     {item.location && (  
                       <View style={styles.locationContainer}>
-                        <FontAwesome name="map-marker" size={16} color="#007A00" />
+                        <FontAwesome name="map-marker" size={16} color={colors.shadow} />
                         <Text style={styles.itemLocation}>{item.location}</Text>
                       </View>
                     )}
                   </View>
-                </View>
+                </TouchableOpacity>
               ))
             ) : (
               <View style={styles.noDataContainer}>
@@ -84,18 +88,25 @@ const styles = {
     width: windowWidth * 0.44,
     height: 220, // Increase the card height
     marginBottom: 16,
-    borderColor: "#E5E5E5",
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 8,
+    // borderColor: "#E5E5E5",
+    // borderWidth: 1,
+    // borderRadius: 8,
+    // padding: 5,
+    height: 250,
+    borderRadius: 30,
+    backgroundColor: colors.white,
+    elevation: 20,
+    // marginLeft:5,
   },
   itemImage: {
     width: "100%",
     height: 160,
-    borderRadius: 8,
+    borderRadius: 30,
   },
   textContainer: {
-    marginTop: 4,
+    marginTop: 9,
+    marginBottom: 7,
+    marginHorizontal: 12,
   },
   itemTitle: {
     color: "#333",
@@ -109,7 +120,8 @@ const styles = {
     opacity: 0.6,  
   },
   itemLocation: {
-    color: "#007A00",
+    color: colors.shadow,
+    fontWeight:'bold',
     fontSize: windowWidth * 0.035,
     marginRight: 4,
  
@@ -128,7 +140,7 @@ const styles = {
   },
   noDataText: {
     fontSize: windowWidth * 0.055,
-    color: "#428288",
+    color: colors.shadow,
     fontWeight: "bold",
   },
 };
