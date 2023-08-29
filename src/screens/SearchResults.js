@@ -88,11 +88,6 @@ const styles = {
     width: windowWidth * 0.44,
     height: 220, // Increase the card height
     marginBottom: 16,
-    // borderColor: "#E5E5E5",
-    // borderWidth: 1,
-    // borderRadius: 8,
-    // padding: 5,
-    height: 250,
     borderRadius: 30,
     backgroundColor: colors.white,
     elevation: 20,
